@@ -11,6 +11,13 @@ class TicketTriageAppTests(unittest.TestCase):
         self.app.result_label = Mock()
         self.app.go_button = Mock()
 
+    @patch("src.app.tk", None)
+    def test_main_reports_missing_tkinter(self):
+        from src.app import main
+
+        with self.assertRaisesRegex(SystemExit, "Tkinter is required"):
+            main()
+
     def test_blank_ticket_shows_validation_message(self):
         self.app.ticket_text.get.return_value = " \n "
 

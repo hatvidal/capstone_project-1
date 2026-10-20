@@ -36,6 +36,9 @@ Use Python 3.10 or newer. From the project root, run:
 python -m src.app
 ```
 
+Tkinter must be available in your Python installation. On Debian or Ubuntu,
+install it with `sudo apt install python3-tk` if needed.
+
 Enter an internal IT ticket and select **GO**. The app calls the configured LLM
 service and displays a category (`account_access`, `bug_report`,
 `feature_request`, or `other`) and urgency (`low`, `medium`, or `high`).
