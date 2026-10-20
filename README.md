@@ -33,6 +33,7 @@ Never commit `.env` or paste the key into any file that is committed. If you thi
 Use Python 3.10 or newer. From the project root, run:
 
 ```bash
+python -m pip install -r requirements.txt
 python -m src.app
 ```
 
