@@ -3,8 +3,15 @@
 from __future__ import annotations
 
 import threading
-import tkinter as tk
-from tkinter import ttk
+
+try:
+    import tkinter as tk
+    from tkinter import ttk
+except ModuleNotFoundError as error:
+    if error.name not in {"tkinter", "_tkinter"}:
+        raise
+    tk = None
+    ttk = None
 
 from .classifier import ClassificationResult, classify_ticket
 
@@ -46,7 +53,7 @@ class TicketTriageApp:
             self.result_label.configure(text="Enter a ticket description before selecting GO.")
             return
 
-        self.go_button.configure(state=tk.DISABLED)
+        self.go_button.configure(state="disabled")
         self.result_label.configure(text="Classifying ticket...")
         threading.Thread(
             target=self._classify_in_background, args=(ticket,), daemon=True
@@ -68,14 +75,20 @@ class TicketTriageApp:
         if result.rationale:
             text += f"\nRationale: {result.rationale}"
         self.result_label.configure(text=text)
-        self.go_button.configure(state=tk.NORMAL)
+        self.go_button.configure(state="normal")
 
     def _show_error(self, message: str) -> None:
         self.result_label.configure(text=f"Classification failed: {message}")
-        self.go_button.configure(state=tk.NORMAL)
+        self.go_button.configure(state="normal")
 
 
 def main() -> None:
+    if tk is None:
+        raise SystemExit(
+            "Tkinter is required to run the desktop app. Install your Python "
+            "distribution's Tk support (for example, python3-tk on Debian/Ubuntu)."
+        )
+
     root = tk.Tk()
     TicketTriageApp(root)
     root.mainloop()
